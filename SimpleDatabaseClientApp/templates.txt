@@ -1,0 +1,3 @@
+FirstTemplate,  10.66.179.192,  1521,  MXMC_db,  mxmc_admin,  123456789,  MS SQL Database;
+SecondTemplate,  10.66.179.192,  1521,  MXMC_db,  mxmc_admin,  123456789,  MS SQL Database;
+Deso Template, 10.66.32.142, 6600, mxmc_db, deso, 12346, Oracle Database;

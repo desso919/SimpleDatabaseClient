@@ -1,0 +1,3 @@
+Select MX_Person, Select * from mc_user, 23
+Select MC_Package, SELECT * FROM MC_Packages, 65
+Select MXP_Tasks, Select * from mxp_taks, 450

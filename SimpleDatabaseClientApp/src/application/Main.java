@@ -1,45 +1,51 @@
 package application;
 
-import com.sap.idm.main.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.Executors;
-
-import com.sap.idm.main.Connect;
-import com.sap.idm.main.TestConnection;
-
-import Database.DatabaseCredentials;
+import Database.DatabaseSingleton;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.stage.Stage;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 
-public class Main extends Application {
+public class Main extends Application implements EventHandler<ActionEvent> {
 
-	@Override
-	public void start(Stage primaryStage) {
-		DatabaseSelection start = new DatabaseSelection();
-		try {
-			start.start(new Stage());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	private TestStage selectDatabaseStage;
+	private SelectDatabaseDriverStage selectDriverStage;
+	private InitializeConnectionStage createConnectionStage;
 
 	public static void main(String[] args) {
 		launch(args);
+	}
+	
+	@Override
+	public void start(Stage primaryStage) {
+		selectDatabaseStage = new TestStage();
+		selectDatabaseStage.getNextButton().setOnAction(this);
+		selectDatabaseStage.getStage().show();
+	}
+
+	@Override
+	public void handle(ActionEvent event) {
+		if (event.getSource() == selectDatabaseStage.getNextButton()) {
+			DatabaseSingleton.setDatabase(selectDatabaseStage.getSelectedDatabase());
+			selectDatabaseStage.getStage().close();
+			
+			selectDriverStage = new SelectDatabaseDriverStage();	
+			selectDriverStage.getNextButton().setOnAction(this);
+			selectDriverStage.getStage().show();
+		
+		} 
+		else if (event.getSource() == selectDriverStage.getNextButton()) {
+			selectDriverStage.getStage().close();
+			
+			createConnectionStage = new InitializeConnectionStage();
+			createConnectionStage.getContinueButton().setOnAction(this);
+			createConnectionStage.getStage().show();		
+		} 
+		else if(event.getSource() == createConnectionStage.getContinueButton()) {
+			createConnectionStage.getStage().close();
+			
+			ExecuteQueryStage executeQueryStage = new ExecuteQueryStage();
+			executeQueryStage.getStage().show();
+		}
 	}
 }

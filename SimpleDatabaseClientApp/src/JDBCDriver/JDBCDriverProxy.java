@@ -1,10 +1,18 @@
 package JDBCDriver;
 
-public class JDBCDriverProxy {
+public class JDBCDriverProxy implements DatabaseDriver {
 
-	private JDBCDriver jdbcDriver;
+	private DatabaseDriver realDriver;
 	
-	public JDBCDriverProxy(JDBCDriver jdbcDriver) {
-		this.jdbcDriver = jdbcDriver;
+	public JDBCDriverProxy(DatabaseDriver jdbcDriver) {
+		if(jdbcDriver != null) {
+			this.realDriver = jdbcDriver;
+		}
 	}
+
+	@Override
+	public String getDatabaseDriver() { 
+		return realDriver.getDatabaseDriver();
+	}
+
 }
